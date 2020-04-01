@@ -1,0 +1,12 @@
+.remove {
+  border: none;
+  transition: all 200ms;
+  background-color: #fff;
+  color: crimson;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.remove:hover {
+  border-bottom: 2px solid crimson;
+}

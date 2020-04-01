@@ -1,0 +1,29 @@
+.Input {
+  width: 320px;
+  border-radius: 5px;
+  border: 2px solid skyblue;
+  padding: 0.5rem 5px;
+  margin: 0 1.3rem;
+}
+
+.Button {
+  background-color: #fff;
+  border: 2px solid cadetblue;
+  font-size: 17px;
+  color: cadetblue;
+  border-radius: 5px;
+  padding: 5px;
+  transition: all 250ms;
+  cursor: pointer;
+}
+
+.Button:hover {
+  background-color: cadetblue;
+  color: #fff;
+}
+
+@media (max-width: 768px) {
+  .Input {
+    width: 300px;
+  }
+}
