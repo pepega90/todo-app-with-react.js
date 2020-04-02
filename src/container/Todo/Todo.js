@@ -80,6 +80,7 @@ class Todo extends Component {
       if (id === todo.id) {
         return {
           ...todo,
+          done: false,
           editing: !todo.editing
         };
       } else {
