@@ -1,54 +1,27 @@
-import React, {Component} from 'react';
-import shortid from 'shortid';
+import React from 'react';
 
 import styling from './Input.css';
 
-class FormInput extends Component {
-  state = {
-    text: ''
-  };
+const formInput = props => {
+  return (
+    <div>
+      <form onSubmit={props.addTodo}>
+        <input
+          className={styling.Input}
+          name="text"
+          placeholder="Input Todo..."
+          onChange={props.changeHandler}
+        />
+        <button
+          onClick={props.addTodo}
+          className={styling.Button}
+          type="submit"
+        >
+          Add Todo
+        </button>
+      </form>
+    </div>
+  );
+};
 
-  changeHandler = e => {
-    e.preventDefault();
-    this.setState({
-      text: e.target.value
-    });
-  };
-
-  formSubmit = event => {
-    event.preventDefault();
-
-    const todo = {
-      id: shortid.generate(),
-      text: this.state.text,
-      done: false
-    };
-
-    this.props.onSubmit(todo);
-    event.target.previousElementSibling.value = null;
-  };
-
-  render() {
-    return (
-      <div>
-        <form onSubmit={this.formSubmit}>
-          <input
-            className={styling.Input}
-            name="text"
-            onChange={this.changeHandler}
-            placeholder="Input Todo..."
-          />
-          <button
-            className={styling.Button}
-            onClick={this.formSubmit}
-            type="submit"
-          >
-            Add Todo
-          </button>
-        </form>
-      </div>
-    );
-  }
-}
-
-export default FormInput;
+export default formInput;
