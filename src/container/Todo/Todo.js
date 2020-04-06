@@ -19,7 +19,7 @@ class Todo extends Component {
 
   changeHandler = e => {
     const updateTextTodo = {
-      ...this.state.todo,
+      id: id.generate(),
       text: e.target.value
     };
 
@@ -31,8 +31,7 @@ class Todo extends Component {
   addTodo = e => {
     e.preventDefault();
     const todo = {
-      id: id.generate(),
-      text: this.state.todo.text
+      ...this.state.todo
     };
 
     this.setState(prevState => ({
