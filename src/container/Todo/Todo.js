@@ -1,4 +1,4 @@
-import React, {Component} from 'react';
+import React, { useState } from 'react';
 
 import styling from './Todo.css';
 import id from 'shortid';
@@ -6,131 +6,99 @@ import id from 'shortid';
 import Input from '../../components/Input/Input';
 import TodoList from '../../components/TodoList/TodoList';
 
-class Todo extends Component {
-  state = {
-    todos: [],
-    todo: {
-      id: '',
-      text: '',
-      done: false,
-      editing: false
-    }
-  };
+const Todo = () => {
+  const [todos, setTodos] = useState([]);
+  const [todo, setTodo] = useState({
+    id: '',
+    text: '',
+    done: false,
+    editing: false,
+  });
 
-  changeHandler = e => {
-    const updateTextTodo = {
+  const changeHandler = e => {
+    const updatedTodo = {
       id: id.generate(),
-      text: e.target.value
+      text: e.target.value,
     };
-
-    this.setState({
-      todo: updateTextTodo
-    });
+    setTodo(updatedTodo);
   };
 
-  addTodo = e => {
+  const addTodo = e => {
     e.preventDefault();
-    const todo = {
-      ...this.state.todo
-    };
-
-    this.setState(prevState => ({
-      todos: [todo, ...prevState.todos]
-    }));
-
+    setTodos(prevState => [todo, ...prevState]);
     e.target.previousElementSibling.value = null;
   };
 
-  editTodo = (id, e) => {
-    const findTodo = this.state.todos.findIndex(val => {
+  const removeTodoHandler = id => {
+    setTodos(prevState => prevState.filter(todo => todo.id !== id));
+  };
+
+  const doneTodo = id => {
+    const done = todos.map(todo => {
+      if (todo.id === id) {
+        return {
+          ...todo,
+          done: !todo.done,
+        };
+      } else {
+        return todo;
+      }
+    });
+    setTodos(done);
+  };
+
+  const editTodo = (id, e) => {
+    const findTodo = todos.findIndex(val => {
       return id === val.id;
     });
 
     const findedTodo = {
-      ...this.state.todos[findTodo]
+      ...todos[findTodo],
     };
 
     findedTodo.text = e.target.value;
 
-    const todos = [...this.state.todos];
-    todos[findTodo] = findedTodo;
-
-    this.setState(prevState => ({
-      todos: todos
-    }));
+    const editedTodo = [...todos];
+    editedTodo[findTodo] = findedTodo;
+    setTodos(prevState => editedTodo);
   };
 
-  removeTodoHandler = id => {
-    const findTodo = this.state.todos.findIndex(val => {
-      return id === val.id;
-    });
-
-    const updateTodos = this.state.todos;
-
-    updateTodos.splice(findTodo, 1);
-
-    this.setState({
-      todos: updateTodos
-    });
-  };
-
-  goEditingMode = id => {
-    const editedTodo = this.state.todos.map(todo => {
-      if (id === todo.id) {
+  const goEditingMode = id => {
+    const goEdit = todos.map(todo => {
+      if (todo.id === id) {
         return {
           ...todo,
           done: false,
-          editing: !todo.editing
+          editing: !todo.editing,
         };
       } else {
         return todo;
       }
     });
 
-    this.setState({
-      todos: editedTodo
-    });
+    setTodos(goEdit);
   };
 
-  doneTodo = id => {
-    const doneTodo = this.state.todos.map(todo => {
-      if (id === todo.id) {
-        return {
-          ...todo,
-          done: !todo.done
-        };
-      } else {
-        return todo;
-      }
-    });
-
-    this.setState({
-      todos: doneTodo
-    });
-  };
-
-  render() {
-    let todo = this.state.todos.map(val => (
-      <TodoList
-        key={val.id}
-        hapus={() => this.removeTodoHandler(val.id)}
-        list={val.text}
-        edit={e => this.editTodo(val.id, e)}
-        editing={() => this.goEditingMode(val.id)}
-        editStatus={val.editing}
-        done={() => this.doneTodo(val.id)}
-        complete={val.done}
-      />
-    ));
-
-    return (
-      <div className={styling.Todo}>
-        <h1>Todo app</h1>
-        <Input addTodo={this.addTodo} changeHandler={this.changeHandler} />
-        {todo}
-      </div>
-    );
-  }
-}
+  return (
+    <div className={styling.Todo}>
+      <h1>Todo app</h1>
+      <Input addTodo={addTodo} changeHandler={changeHandler} />
+      {todos.map(val => {
+        return (
+          <TodoList
+            key={val.id}
+            hapus={() => removeTodoHandler(val.id)}
+            list={val.text}
+            edit={e => editTodo(val.id, e)}
+            editing={() => goEditingMode(val.id)}
+            editStatus={val.editing}
+            done={() => doneTodo(val.id)}
+            complete={val.done}
+          />
+        );
+      })}
+    </div>
+  );
+};
 
 export default Todo;

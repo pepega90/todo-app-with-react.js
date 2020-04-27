@@ -8,9 +8,8 @@ const todoList = props => (
     <ul
       style={{
         cursor: 'pointer',
-        textDecoration: props.complete ? 'line-through' : ''
-      }}
-    >
+        textDecoration: props.complete ? 'line-through' : '',
+      }}>
       <li onClick={props.done}>
         {props.editStatus ? (
           <input value={props.list} onChange={props.edit} />

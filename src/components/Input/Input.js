@@ -15,8 +15,7 @@ const formInput = props => {
         <button
           onClick={props.addTodo}
           className={styling.Button}
-          type="submit"
-        >
+          type="submit">
           Add Todo
         </button>
       </form>
